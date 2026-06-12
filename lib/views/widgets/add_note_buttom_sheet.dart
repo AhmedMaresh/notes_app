@@ -6,6 +6,12 @@ class AddNoteButtomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [SizedBox(height: 25), CustomTextField()]);
+    return Column(
+      children: [
+        SizedBox(height: 25),
+        CustomTextField(hintText: 'Title'),
+        CustomTextField(hintText: 'Content', maxLines: 5),
+      ],
+    );
   }
 }
