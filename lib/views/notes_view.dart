@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notes_app/constants.dart';
 import 'package:notes_app/views/widgets/add_note_buttom_sheet.dart';
 import 'package:notes_app/views/widgets/notes_view_body.dart';
 
@@ -20,7 +21,7 @@ class NotesView extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(28),
         ),
-        backgroundColor: Colors.teal,
+        backgroundColor: kPrimaryColor,
         elevation: 5,
         child: Icon(Icons.add),
       ),
