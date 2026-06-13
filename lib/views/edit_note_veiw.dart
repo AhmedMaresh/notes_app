@@ -6,6 +6,11 @@ class EditNoteView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: EditNoteViewBody());
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(body: EditNoteViewBody()),
+    );
   }
 }
