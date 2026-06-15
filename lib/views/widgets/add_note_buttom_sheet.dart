@@ -11,20 +11,60 @@ class AddNoteButtomSheet extends StatelessWidget {
       onTap: () {
         FocusScope.of(context).unfocus();
       },
-      child: Padding(
+      child: const Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 25),
-              CustomTextField(hintText: 'Title'),
-              CustomTextField(hintText: 'Content', maxLines: 5),
-              SizedBox(height: 28),
-              CustomButton(),
-              SizedBox(height: 28),
-            ],
+        child: SingleChildScrollView(child: AddNoteView()),
+      ),
+    );
+  }
+}
+
+class AddNoteView extends StatefulWidget {
+  const AddNoteView({super.key});
+
+  @override
+  State<AddNoteView> createState() => _AddNoteViewState();
+}
+
+class _AddNoteViewState extends State<AddNoteView> {
+  final GlobalKey<FormState> formKey = GlobalKey();
+  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  String? title, subTitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: formKey,
+      autovalidateMode: autovalidateMode,
+      child: Column(
+        children: [
+          const SizedBox(height: 25),
+          CustomTextField(
+            onSaved: (value) {
+              title = value;
+            },
+            hintText: 'Title',
           ),
-        ),
+          CustomTextField(
+            onSaved: (value) {
+              subTitle = value;
+            },
+            hintText: 'Content',
+            maxLines: 5,
+          ),
+          const SizedBox(height: 28),
+          CustomButton(
+            onTap: () {
+              if (formKey.currentState!.validate()) {
+                formKey.currentState!.save();
+              } else {
+                autovalidateMode = AutovalidateMode.always;
+                setState(() {});
+              }
+            },
+          ),
+          const SizedBox(height: 28),
+        ],
       ),
     );
   }
