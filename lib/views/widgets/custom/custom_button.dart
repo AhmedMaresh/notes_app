@@ -3,7 +3,8 @@ import 'package:notes_app/constants.dart';
 
 class CustomButton extends StatelessWidget {
   final void Function()? onTap;
-  const CustomButton({super.key, this.onTap});
+  final bool isLoading;
+  const CustomButton({super.key, this.onTap, this.isLoading = false});
 
   @override
   Widget build(BuildContext context) {
@@ -16,15 +17,21 @@ class CustomButton extends StatelessWidget {
         ),
         height: 60,
         width: MediaQuery.of(context).size.width,
-        child: const Center(
-          child: Text(
-            'Add',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+        child: Center(
+          child: isLoading
+              ? SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: const CircularProgressIndicator(color: Colors.black),
+                )
+              : const Text(
+                  'Add',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
         ),
       ),
     );
