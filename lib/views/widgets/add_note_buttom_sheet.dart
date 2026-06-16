@@ -31,8 +31,12 @@ class _AddNoteButtomSheetState extends State<AddNoteButtomSheet> {
           builder: (BuildContext context, state) {
             return AbsorbPointer(
               absorbing: state is AddNoteLoading ? true : false,
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 18),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 18,
+                  right: 18,
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
                 child: SingleChildScrollView(child: AddNoteView()),
               ),
             );
