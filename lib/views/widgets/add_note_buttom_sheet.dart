@@ -1,70 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/views/widgets/custom/custom_button.dart';
-import 'package:notes_app/views/widgets/custom/custom_text_field.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:notes_app/cubits/add_note_cubit/add_note_cubit.dart';
+import 'package:notes_app/views/widgets/add_note_view.dart';
 
-class AddNoteButtomSheet extends StatelessWidget {
+class AddNoteButtomSheet extends StatefulWidget {
   const AddNoteButtomSheet({super.key});
 
+  @override
+  State<AddNoteButtomSheet> createState() => _AddNoteButtomSheetState();
+}
+
+class _AddNoteButtomSheetState extends State<AddNoteButtomSheet> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
       },
-      child: const Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18),
-        child: SingleChildScrollView(child: AddNoteView()),
-      ),
-    );
-  }
-}
-
-class AddNoteView extends StatefulWidget {
-  const AddNoteView({super.key});
-
-  @override
-  State<AddNoteView> createState() => _AddNoteViewState();
-}
-
-class _AddNoteViewState extends State<AddNoteView> {
-  final GlobalKey<FormState> formKey = GlobalKey();
-  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
-  String? title, subTitle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      autovalidateMode: autovalidateMode,
-      child: Column(
-        children: [
-          const SizedBox(height: 25),
-          CustomTextField(
-            onSaved: (value) {
-              title = value;
-            },
-            hintText: 'Title',
-          ),
-          CustomTextField(
-            onSaved: (value) {
-              subTitle = value;
-            },
-            hintText: 'Content',
-            maxLines: 5,
-          ),
-          const SizedBox(height: 28),
-          CustomButton(
-            onTap: () {
-              if (formKey.currentState!.validate()) {
-                formKey.currentState!.save();
-              } else {
-                autovalidateMode = AutovalidateMode.always;
-                setState(() {});
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 18),
+        child: SingleChildScrollView(
+          child: BlocConsumer<AddNoteCubit, AddNoteState>(
+            listener: (BuildContext context, state) {
+              if (state is AddNoteSuccess) {
+                Navigator.pop(context);
+              }
+              if (state is AddNoteFailure) {
+                print('Failed ${state.errMessage}');
               }
             },
+            builder: (BuildContext context, state) {
+              return ModalProgressHUD(
+                inAsyncCall: state is AddNoteLoading ? true : false,
+                child: const AddNoteView(),
+              );
+            },
           ),
-          const SizedBox(height: 28),
-        ],
+        ),
       ),
     );
   }
