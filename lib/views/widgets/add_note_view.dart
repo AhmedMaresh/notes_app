@@ -55,7 +55,12 @@ class _AddNoteViewState extends State<AddNoteView> {
                       title: title!,
                       subTitle: subTitle!,
                       date: date,
-                      color: Colors.blueAccent.toARGB32(),
+                      color: const Color.fromARGB(
+                        255,
+                        184,
+                        113,
+                        243,
+                      ).toARGB32(),
                     );
                     BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
                   } else {
