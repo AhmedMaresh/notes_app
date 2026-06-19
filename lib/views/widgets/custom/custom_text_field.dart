@@ -5,12 +5,14 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final int maxLines;
   final void Function(String?)? onSaved;
+  final void Function(String)? onChanged;
 
   const CustomTextField({
     super.key,
     required this.hintText,
     this.maxLines = 1,
     this.onSaved,
+    this.onChanged,
   });
 
   @override
@@ -29,6 +31,7 @@ class CustomTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: TextFormField(
+        onChanged: onChanged,
         onSaved: onSaved,
         validator: (value) {
           if (value?.isEmpty ?? true) {
@@ -40,8 +43,8 @@ class CustomTextField extends StatelessWidget {
         maxLines: maxLines,
         cursorColor: kPrimaryColor,
         decoration: InputDecoration(
-          label: Text(hintText),
-          labelStyle: TextStyle(color: kPrimaryColor),
+          hint: Text(hintText),
+          hintStyle: TextStyle(color: kPrimaryColor),
           //////////////////////////Border////////////////////////////
           border: buildBorder(color: Colors.white, radius: 8, width: 0.5),
           //////////////////////////Enabled Border////////////////////////////
