@@ -12,6 +12,7 @@ class NotesViewBody extends StatefulWidget {
 }
 
 class _NotesViewBodyState extends State<NotesViewBody> {
+  bool isSearching = false;
   @override
   void initState() {
     BlocProvider.of<NotesCubit>(context).fetchAllNotes();
@@ -25,7 +26,36 @@ class _NotesViewBodyState extends State<NotesViewBody> {
       child: Column(
         children: [
           SizedBox(height: 50),
-          CustomAppBar(title: 'Note', icon: Icons.search),
+          isSearching
+              ? TextField(
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: 'Search',
+                    border: InputBorder.none,
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isSearching = false;
+                        });
+
+                        context.read<NotesCubit>().searchNote('');
+                      },
+                      icon: Icon(Icons.close),
+                    ),
+                  ),
+                  onChanged: (value) {
+                    context.read<NotesCubit>().searchNote(value);
+                  },
+                )
+              : CustomAppBar(
+                  title: 'Note',
+                  icon: Icons.search,
+                  onPressed: () {
+                    setState(() {
+                      isSearching = true;
+                    });
+                  },
+                ),
           Expanded(child: NotesListView()),
         ],
       ),
